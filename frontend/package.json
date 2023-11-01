@@ -11,9 +11,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/jest": "^29.5.7",
+    "@types/node": "^20.8.10",
+    "@types/react": "^18.2.33",
+    "@types/react-dom": "^18.2.14",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/styled-components": "^5.1.29",
+    "eslint-plugin-prettier": "^5.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "styled-components": "^6.1.0",
+    "typescript": "^5.2.2"
   },
   "browserslist": {
     "production": [
@@ -26,5 +35,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^8.52.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0"
   }
 }
