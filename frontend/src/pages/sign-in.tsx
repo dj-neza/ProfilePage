@@ -1,8 +1,14 @@
+import { Navigate } from "react-router-dom";
 import { useAuthContext } from "../auth/auth-context";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 export function SignIn() {
   const { firebaseAuth, firebaseUiConfig } = useAuthContext();
+  const { isAuthenticated } = useAuthContext();
+
+  if (isAuthenticated) {
+    return <Navigate to="/profile" />;
+  }
 
   return (
     <div>
