@@ -2,30 +2,29 @@ import styled from "styled-components";
 
 export const Button = styled.button<{
   size?: "sm" | "md";
-  variant?: "filled" | "outlined";
+  variant?: "primary" | "secondary";
 }>(({ size = "md", variant = "filled" }) => ({
   font: "inherit",
   color: "white",
-  backgroundColor: "#0E86D4",
-  borderColor: "#0E86D4",
+  border: "1px solid",
+  backgroundColor: "#055C9D",
+  borderColor: "#055C9D",
   "&:hover": {
+    outline: "none",
     background: "#003060",
     borderColor: "#003060",
   },
-  ...(variant === "outlined" && {
-    color: "#0E86D4",
-    backgroundColor: "white",
-    borderColor: "#0E86D4",
+  ...(variant === "secondary" && {
+    backgroundColor: "#003060",
+    borderColor: "#003060",
     "&:hover": {
-      color: "white",
-      backgroundColor: "#0E86D4",
-      borderColor: "#0E86D4",
+      backgroundColor: "#050A30",
+      borderColor: "#050A30",
     },
   }),
   cursor: "pointer",
   textDecoration: "none",
   display: "block",
-  border: "1px solid",
   borderRadius: 9999,
   textAlign: "center",
   whiteSpace: "nowrap",
