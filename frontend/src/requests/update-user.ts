@@ -9,8 +9,8 @@ type UpdateUserParams = {
 }
 export function updateUser({phoneNumber, email, displayName}: UpdateUserParams) {
   return axios.put(`https://updateuser${requestSuffix}`, {
-    phoneNumber,
-    email,
-    displayName
+      phoneNumber,
+      email,
+      displayName
   })
 }
