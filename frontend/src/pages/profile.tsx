@@ -86,7 +86,7 @@ export function Profile() {
               <Button
                 size="sm"
                 type="button"
-                variant="outlined"
+                variant="secondary"
                 onClick={() => setIsEditing(false)}
               >
                 Cancel
@@ -100,7 +100,7 @@ export function Profile() {
               <Paragraph>{user?.phoneNumber}</Paragraph>
               <Paragraph>{user?.email ?? "No email yet :("}</Paragraph>
             </div>
-            <Button size="sm" variant="outlined" onClick={logOut}>
+            <Button size="sm" variant="secondary" onClick={logOut}>
               Log out
             </Button>
           </Column>
