@@ -3,6 +3,7 @@ import { AuthProvider } from "./auth/auth-context";
 import { SignIn } from "./pages/sign-in";
 import { ProtectedRouteWrapper } from "./protected-route-wrapper";
 import { Profile } from "./pages/profile";
+import { GlobalStyles } from "./styles/global-styles";
 
 function AppRoutes() {
   return (
@@ -23,6 +24,7 @@ function AppRoutes() {
 export function App() {
   return (
     <AuthProvider>
+      <GlobalStyles />
       <BrowserRouter>
         <AppRoutes />
       </BrowserRouter>
