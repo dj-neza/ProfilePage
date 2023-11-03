@@ -1,19 +1,26 @@
-import { ReactNode, createContext, useContext, useEffect } from "react";
+import {
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  Dispatch,
+} from "react";
 import { firebaseConfig } from "../vendor/firebase-config";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { useLocalStorage } from "../hooks/use-local-storage";
 import { getUser } from "../requests/get-user";
 
-type User = {
-  displayName: string | null;
-  email: string | null;
+export type User = {
+  displayName?: string;
+  email?: string;
   phoneNumber: string | null;
 };
 
 type AuthContextType = {
   user?: User | null;
-  setUser: (user: User) => void;
+  setUser: Dispatch<SetStateAction<User | null | undefined>>;
   isAuthenticated: boolean;
   firebaseAuth: firebase.auth.Auth;
   firebaseUiConfig: {
