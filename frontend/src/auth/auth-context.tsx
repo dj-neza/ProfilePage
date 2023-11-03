@@ -3,6 +3,7 @@ import { firebaseConfig } from "../vendor/firebase-config";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { useLocalStorage } from "../hooks/use-local-storage";
+import { getUser } from "../requests/get-user";
 
 type User = {
   displayName: string | null;
@@ -38,21 +39,16 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const firebaseAuth = firebase.auth();
 
   useEffect(() => {
-    const unregisterAuthObserver = firebase
-      .auth()
-      .onAuthStateChanged((user) => {
-        if (user) {
-          const { displayName, email, phoneNumber } = user;
-          setUserInfo({
-            displayName,
-            email,
-            phoneNumber,
-          });
-        } else {
-          setUserInfo(null);
-        }
-      });
-    return () => unregisterAuthObserver();
+    firebase.auth().onAuthStateChanged(async (user) => {
+      if (user?.phoneNumber) {
+        const { phoneNumber } = user;
+        getUser({ phoneNumber }).then(({ data }) =>
+          setUserInfo({ phoneNumber, ...data }),
+        );
+      } else {
+        setUserInfo(null);
+      }
+    });
   }, []);
 
   const logOut = () => {
