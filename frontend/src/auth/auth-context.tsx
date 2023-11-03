@@ -18,7 +18,7 @@ type AuthContextType = {
   firebaseUiConfig: {
     signInFlow: string;
     signInSuccessUrl: string;
-    signInOptions: string[];
+    signInOptions: { provider: string; defaultCountry: string }[];
   };
   logOut: () => void;
 };
@@ -60,9 +60,14 @@ function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const firebaseUiConfig = {
-    signInFlow: "popup",
+    signInFlow: "popup", //redirect
     signInSuccessUrl: "/profile",
-    signInOptions: [firebase.auth.PhoneAuthProvider.PROVIDER_ID],
+    signInOptions: [
+      {
+        provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+        defaultCountry: "SE",
+      },
+    ],
   };
 
   const value = {
