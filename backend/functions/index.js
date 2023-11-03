@@ -19,7 +19,7 @@ exports.addUser = auth.user().onCreate(async (user) => {
 });
 
 // Update users details
-exports.updateUser = onRequest(async (req, res) => {
+exports.updateUser = onRequest({cors: true}, async (req, res) => {
   const email = req.query.email;
   const displayName = req.query.displayName;
   await getFirestore()
@@ -32,16 +32,16 @@ exports.updateUser = onRequest(async (req, res) => {
 });
 
 // Get user details
-exports.getUser = onRequest(async (req, res) => {
+exports.getUser = onRequest({cors: true}, async (req, res) => {
   const phoneNumber = req.query.phoneNumber;
   await getFirestore().collection("users").doc(phoneNumber).get()
       .then((user) => {
         if (user.exists) {
-          res.json({result: user.data()});
+          res.json({...user.data()});
         } else {
-          res.json({result: "No such user!"});
+          res.json({error: "No such user!"});
         }
       }).catch((error) => {
-        res.json({result: error});
+        res.json({error});
       });
 });
