@@ -1,6 +1,37 @@
 import { useState } from "react";
 import { User, useAuthContext } from "../auth/auth-context";
 import { updateUser } from "../requests/update-user";
+import { Button } from "../components/button";
+import { Heading } from "../components/heading";
+import styled from "styled-components";
+import { PageWrapper } from "../components/page-wrapper";
+import { Paragraph } from "../components/paragraph";
+
+const ContentWrapper = styled.div({
+  width: 360,
+  height: 320,
+  backgroundColor: "white",
+  borderRadius: 16,
+  border: "1px solid #E5E5E5",
+  padding: 24,
+  display: "flex",
+  flexDirection: "column",
+  gap: 32,
+  alignItems: "center",
+});
+const Row = styled.div({
+  width: "100%",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+});
+const Column = styled.div({
+  display: "flex",
+  flexGrow: 1,
+  flexDirection: "column",
+  alignItems: "center",
+  gap: 16,
+});
 
 export function Profile() {
   const { user, setUser, logOut } = useAuthContext();
@@ -21,50 +52,59 @@ export function Profile() {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-      }}
-    >
-      <h3>Your profile</h3>
-      {isEditing ? (
-        <form onSubmit={handleSubmit} name="form">
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-            }}
-          >
-            <input
-              value={formValues.displayName}
-              placeholder="Name"
-              onChange={(e) =>
-                handleFormValueChange({ displayName: e.target.value })
-              }
-            />
-            <input
-              value={formValues.email}
-              placeholder="Email"
-              onChange={(e) => handleFormValueChange({ email: e.target.value })}
-            />
-            <button type="submit">Save</button>
-            <button type="button" onClick={() => setIsEditing(false)}>
-              Cancel
-            </button>
-          </div>
-        </form>
-      ) : (
-        <>
-          <button onClick={() => setIsEditing(true)}>Edit</button>
-          <p>{user?.displayName ?? "No name"}</p>
-          <p>{user?.email ?? "No email"}</p>
-          <p>{user?.phoneNumber ?? "No phone"}</p>
-          <button onClick={logOut}>Log out</button>
-        </>
-      )}
-    </div>
+    <PageWrapper>
+      <ContentWrapper>
+        <Row>
+          <Heading>{`Hi, ${user?.displayName}`}</Heading>
+          {!isEditing && (
+            <Button size="sm" onClick={() => setIsEditing(true)}>
+              Edit
+            </Button>
+          )}
+        </Row>
+        {isEditing ? (
+          <form onSubmit={handleSubmit} name="form">
+            <Column>
+              <input
+                value={formValues.displayName}
+                placeholder="Name"
+                onChange={(e) =>
+                  handleFormValueChange({ displayName: e.target.value })
+                }
+              />
+              <input
+                value={formValues.email}
+                placeholder="Email"
+                onChange={(e) =>
+                  handleFormValueChange({ email: e.target.value })
+                }
+              />
+              <Button size="sm" type="submit">
+                Save
+              </Button>
+              <Button
+                size="sm"
+                type="button"
+                variant="outlined"
+                onClick={() => setIsEditing(false)}
+              >
+                Cancel
+              </Button>
+            </Column>
+          </form>
+        ) : (
+          <Column>
+            <div>
+              <Paragraph>{`You have logged in using this information:`}</Paragraph>
+              <Paragraph>{user?.phoneNumber}</Paragraph>
+              <Paragraph>{user?.email ?? "No email yet :("}</Paragraph>
+            </div>
+            <Button size="sm" variant="outlined" onClick={logOut}>
+              Log out
+            </Button>
+          </Column>
+        )}
+      </ContentWrapper>
+    </PageWrapper>
   );
 }
