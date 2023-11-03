@@ -6,6 +6,7 @@ import { Heading } from "../components/heading";
 import styled from "styled-components";
 import { PageWrapper } from "../components/page-wrapper";
 import { Paragraph } from "../components/paragraph";
+import { Input } from "../components/input";
 
 const ContentWrapper = styled.div({
   width: 360,
@@ -63,16 +64,16 @@ export function Profile() {
           )}
         </Row>
         {isEditing ? (
-          <form onSubmit={handleSubmit} name="form">
+          <form onSubmit={handleSubmit} name="form" style={{ width: "100%" }}>
             <Column>
-              <input
+              <Input
                 value={formValues.displayName}
                 placeholder="Name"
                 onChange={(e) =>
                   handleFormValueChange({ displayName: e.target.value })
                 }
               />
-              <input
+              <Input
                 value={formValues.email}
                 placeholder="Email"
                 onChange={(e) =>
