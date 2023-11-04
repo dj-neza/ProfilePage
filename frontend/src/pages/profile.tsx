@@ -5,7 +5,7 @@ import { Button } from "../components/button";
 import { Heading } from "../components/heading";
 import styled from "styled-components";
 import { PageWrapper } from "../components/page-wrapper";
-import { Paragraph } from "../components/paragraph";
+import { ErrorMessage, Paragraph } from "../components/paragraph";
 import { Input } from "../components/input";
 import { useForm } from "react-hook-form";
 
@@ -28,11 +28,19 @@ const Row = styled.div({
   alignItems: "center",
 });
 const Column = styled.div({
+  width: "100%",
   display: "flex",
   flexGrow: 1,
   flexDirection: "column",
   alignItems: "center",
   gap: 16,
+});
+
+const InputWrapper = styled.div({
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  gap: 4,
 });
 
 export function Profile() {
@@ -73,25 +81,34 @@ export function Profile() {
             style={{ width: "100%" }}
           >
             <Column>
-              <Input
-                placeholder="Name"
-                {...register("displayName", { required: "Name is mandatory" })}
-              />
-              <Input
-                placeholder="Email"
-                {...register("email", {
-                  required: "Email is mandatory",
-                  pattern: {
-                    value: /\S+@\S+\.\S+/,
-                    message: "Please enter a valid email",
-                  },
-                })}
-              />
-              <Paragraph>
-                {errors.email?.message ||
-                  errors.displayName?.message ||
-                  "lalala"}
-              </Paragraph>
+              <InputWrapper>
+                <Input
+                  placeholder="Name"
+                  {...register("displayName", {
+                    required: "Name is mandatory",
+                  })}
+                  hasError={Boolean(errors.displayName)}
+                />
+                {errors.displayName?.message && (
+                  <ErrorMessage>{errors.displayName?.message}</ErrorMessage>
+                )}
+              </InputWrapper>
+              <InputWrapper>
+                <Input
+                  placeholder="Email"
+                  {...register("email", {
+                    required: "Email is mandatory",
+                    pattern: {
+                      value: /\S+@\S+\.\S+/,
+                      message: "Please enter a valid email",
+                    },
+                  })}
+                  hasError={Boolean(errors.email)}
+                />
+                {errors.email?.message && (
+                  <ErrorMessage>{errors.email?.message}</ErrorMessage>
+                )}
+              </InputWrapper>
               <Button size="sm" type="submit" disabled={!isValid}>
                 Save
               </Button>
@@ -106,16 +123,16 @@ export function Profile() {
             </Column>
           </form>
         ) : (
-          <Column>
-            <div>
+          <>
+            <Column>
               <Paragraph>{`You have logged in using this information:`}</Paragraph>
               <Paragraph>{user?.phoneNumber}</Paragraph>
               <Paragraph>{user?.email ?? "No email yet :("}</Paragraph>
-            </div>
+            </Column>
             <Button size="sm" variant="secondary" onClick={logOut}>
               Log out
             </Button>
-          </Column>
+          </>
         )}
       </ContentWrapper>
     </PageWrapper>
