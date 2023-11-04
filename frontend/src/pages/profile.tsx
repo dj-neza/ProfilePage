@@ -141,7 +141,7 @@ export function Profile() {
         </ContentWrapper>
       ) : (
         <ContentWrapper>
-          <Heading>{`Hello ${user?.name ?? generatedName}`}</Heading>
+          <Heading>{`Hello ${user?.name || generatedName}`}</Heading>
           <Column>
             <Paragraph>{`This is your information:`}</Paragraph>
             <Paragraph>{user?.phoneNumber}</Paragraph>
