@@ -4,8 +4,8 @@ export const ContentWrapper = styled.div<{ $verticallyCenter?: boolean }>(
   ({ $verticallyCenter = false }) => ({
     boxSizing: "border-box",
     width: "100%",
-    height: "90%",
-    marginTop: "20%",
+    height: "70%",
+    marginTop: "10%",
     backgroundColor: "white",
     border: "1px solid #E5E5E5",
     padding: 24,
