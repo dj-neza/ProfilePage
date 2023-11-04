@@ -10,6 +10,7 @@ import { Input } from "../components/input";
 import { useForm } from "react-hook-form";
 import { Loader } from "../components/loader";
 import { ContentWrapper } from "../components/content-wrapper";
+import { useNotificationContext } from "../contexts/notification-context";
 
 const Column = styled.div({
   width: "100%",
@@ -43,6 +44,7 @@ export function Profile() {
     generatedName,
     isLoading: isAuthLoading,
   } = useAuthContext();
+  const { addNotification } = useNotificationContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -60,9 +62,16 @@ export function Profile() {
   const onSubmit = async (formValues: User) => {
     setIsLoading(true);
     await updateUser({ ...formValues, phoneNumber: user?.phoneNumber! })
-      .then(() => setUser(formValues))
-      .finally(() => {
+      .then(() => {
+        setUser(formValues);
         setIsEditing(false);
+      })
+      .catch(({ response }) => {
+        addNotification({
+          message: response.data.error ?? "Something unexpected happened.",
+        });
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };
