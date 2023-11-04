@@ -46,18 +46,19 @@ export function Profile() {
     reset,
   } = useForm<User>({ defaultValues: user ?? undefined, mode: "onChange" });
 
+  const handleStopEditing = () => {
+    setIsEditing(false);
+    reset(user ?? undefined);
+  };
+
   const onSubmit = async (formValues: User) => {
     setIsLoading(true);
     await updateUser({ ...formValues, phoneNumber: user?.phoneNumber! })
       .then(() => setUser(formValues))
       .finally(() => {
-        setIsEditing(false);
+        handleStopEditing();
         setIsLoading(false);
       });
-  };
-  const handleStopEditing = () => {
-    setIsEditing(false);
-    reset(user ?? undefined);
   };
 
   if (isLoading) {
