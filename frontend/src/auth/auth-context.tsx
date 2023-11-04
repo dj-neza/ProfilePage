@@ -56,7 +56,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         setUserInfo(null);
       }
     });
-  }, []);
+  }, [setUserInfo]);
 
   const logOut = () => {
     firebaseAuth.signOut();
