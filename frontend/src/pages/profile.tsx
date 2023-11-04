@@ -22,6 +22,8 @@ const ContentWrapper = styled.div({
   alignItems: "center",
   "@media(min-width: 480px)": {
     width: 360,
+    minHeight: "50%",
+    height: "unset",
     borderRadius: 16,
     marginTop: "unset",
   },
@@ -33,6 +35,14 @@ const Row = styled.div({
   alignItems: "center",
 });
 const Column = styled.div({
+  width: "100%",
+  display: "flex",
+  flexGrow: 1,
+  flexDirection: "column",
+  alignItems: "center",
+  gap: 16,
+});
+const Form = styled.form({
   width: "100%",
   display: "flex",
   flexGrow: 1,
@@ -80,7 +90,7 @@ export function Profile() {
           )}
         </Row>
         {isEditing ? (
-          <form
+          <Form
             onSubmit={handleSubmit(onSubmit)}
             name="form"
             style={{ width: "100%" }}
@@ -114,19 +124,19 @@ export function Profile() {
                   <ErrorMessage>{errors.email?.message}</ErrorMessage>
                 )}
               </InputWrapper>
-              <Button size="sm" type="submit" disabled={!isValid}>
-                Save
-              </Button>
-              <Button
-                size="sm"
-                type="button"
-                variant="secondary"
-                onClick={handleStopEditing}
-              >
-                Cancel
-              </Button>
             </Column>
-          </form>
+            <Button size="sm" type="submit" disabled={!isValid}>
+              Save
+            </Button>
+            <Button
+              size="sm"
+              type="button"
+              variant="secondary"
+              onClick={handleStopEditing}
+            >
+              Cancel
+            </Button>
+          </Form>
         ) : (
           <>
             <Column>
