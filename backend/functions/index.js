@@ -13,8 +13,8 @@ exports.addUser = auth.user().onCreate(async (user) => {
   await getFirestore().collection("users").doc(
       user.phoneNumber,
   ).set({
-    displayName: "Happy chipmunk1",
-    email: "happy.chipmunk@fairyland.se",
+    name: "Happy chipmunk",
+    email: "",
   });
 });
 
@@ -27,7 +27,7 @@ exports.updateUser = onRequest({cors: true}, async (req, res) => {
       .collection("users")
       .doc(phoneNumber)
       .set({
-        displayName: displayName,
+        name: displayName,
         email: email,
       }).then(() => res.json({result: `User info updated.`})).catch((error) => {
         res.json({error});
