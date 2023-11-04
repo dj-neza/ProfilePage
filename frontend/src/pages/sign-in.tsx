@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useAuthContext } from "../auth/auth-context";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+// import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import FirebaseAuth from "../components/firebase-auth";
 import styled from "styled-components";
 import { PageWrapper } from "../components/page-wrapper";
 import { Heading } from "../components/heading";
@@ -30,10 +31,7 @@ export function SignIn() {
     <PageWrapper>
       <ContentWrapper>
         <Heading>Sign in</Heading>
-        <StyledFirebaseAuth
-          uiConfig={firebaseUiConfig}
-          firebaseAuth={firebaseAuth}
-        />
+        <FirebaseAuth uiConfig={firebaseUiConfig} firebaseAuth={firebaseAuth} />
       </ContentWrapper>
     </PageWrapper>
   );
