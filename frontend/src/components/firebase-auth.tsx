@@ -3,19 +3,19 @@ import { onAuthStateChanged } from "firebase/auth";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
 
-interface Props {
+type FirebaseAuthProps = {
   uiConfig: firebaseui.auth.Config;
   uiCallback?(ui: firebaseui.auth.AuthUI): void;
   firebaseAuth: any;
   className?: string;
-}
+};
 
 const FirebaseAuth = ({
   uiConfig,
   firebaseAuth,
   className,
   uiCallback,
-}: Props) => {
+}: FirebaseAuthProps) => {
   const [userSignedIn, setUserSignedIn] = useState(false);
   const elementRef = useRef(null);
 
