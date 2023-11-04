@@ -7,7 +7,7 @@ export const GlobalStyles = createGlobalStyle({
     height: '100vh',
     fontFamily: 'Verdana, sans-serif',
   },
-  '#app': {
+  '#root': {
     height: '100%',
   },
 })
