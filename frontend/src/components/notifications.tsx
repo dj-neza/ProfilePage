@@ -13,6 +13,7 @@ const NotificationsListContainer = styled.div({
   minWidth: 320,
   maxWidth: 350,
   zIndex: 10,
+  gap: 16,
 });
 
 const Container = styled.div({

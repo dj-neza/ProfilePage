@@ -12,6 +12,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { useLocalStorage } from "../hooks/use-local-storage";
 import { getUser } from "../requests/get-user";
+import { useNotificationContext } from "../contexts/notification-context";
 
 export type User = {
   name?: string;
@@ -48,6 +49,7 @@ function AuthProvider({
   generatedName: string | null;
 }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { addNotification } = useNotificationContext();
   const [isLoading, setIsLoading] = useState(false);
   const [userInfo, setUserInfo] = useLocalStorage<User | null>(
     "userInfo",
@@ -62,16 +64,24 @@ function AuthProvider({
         const { phoneNumber } = user;
         setIsAuthenticated(true);
         setIsLoading(true);
-        getUser({ phoneNumber }).then(({ data }) => {
-          setUserInfo({ phoneNumber, ...data });
-          setIsLoading(false);
-        });
+        getUser({ phoneNumber })
+          .then(({ data }) => {
+            setUserInfo({ phoneNumber, ...data });
+            setIsLoading(false);
+          })
+          .catch(({ response }) => {
+            addNotification({
+              message: response.data.error ?? "Something unexpected happened.",
+            });
+            setIsLoading(false);
+          });
       } else {
         setIsAuthenticated(false);
         setUserInfo(null);
       }
     });
-  }, [setUserInfo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const logOut = () => {
     firebaseAuth.signOut();
