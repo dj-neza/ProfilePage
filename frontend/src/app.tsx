@@ -11,6 +11,8 @@ import {
   adjectives,
   uniqueNamesGenerator,
 } from "unique-names-generator";
+import { NotificationProvider } from "./contexts/notification-context";
+import { Notifications } from "./components/notifications";
 
 function AppRoutes() {
   return (
@@ -48,11 +50,14 @@ export function App() {
   }, []);
 
   return (
-    <AuthProvider generatedName={generatedName ?? null}>
-      <GlobalStyles />
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </AuthProvider>
+    <NotificationProvider>
+      <AuthProvider generatedName={generatedName ?? null}>
+        <GlobalStyles />
+        <BrowserRouter>
+          <AppRoutes />
+          <Notifications />
+        </BrowserRouter>
+      </AuthProvider>
+    </NotificationProvider>
   );
 }
