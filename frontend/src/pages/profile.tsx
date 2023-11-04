@@ -84,7 +84,7 @@ export function Profile() {
         <Row>
           <Heading>{`Hi, ${user?.name}`}</Heading>
           {!isEditing && (
-            <Button size="sm" onClick={() => setIsEditing(true)}>
+            <Button $size="sm" onClick={() => setIsEditing(true)}>
               Edit
             </Button>
           )}
@@ -102,7 +102,7 @@ export function Profile() {
                   {...register("name", {
                     required: "Name is mandatory",
                   })}
-                  hasError={Boolean(errors.name)}
+                  $hasError={Boolean(errors.name)}
                 />
                 {errors.name?.message && (
                   <ErrorMessage>{errors.name?.message}</ErrorMessage>
@@ -118,20 +118,20 @@ export function Profile() {
                       message: "Please enter a valid email",
                     },
                   })}
-                  hasError={Boolean(errors.email)}
+                  $hasError={Boolean(errors.email)}
                 />
                 {errors.email?.message && (
                   <ErrorMessage>{errors.email?.message}</ErrorMessage>
                 )}
               </InputWrapper>
             </Column>
-            <Button size="sm" type="submit" disabled={!isValid}>
+            <Button $size="sm" type="submit" disabled={!isValid}>
               Save
             </Button>
             <Button
-              size="sm"
+              $size="sm"
               type="button"
-              variant="secondary"
+              $variant="secondary"
               onClick={handleStopEditing}
             >
               Cancel
@@ -146,7 +146,7 @@ export function Profile() {
                 {Boolean(user?.email) ? user?.email : "No email yet :("}
               </Paragraph>
             </Column>
-            <Button size="sm" variant="secondary" onClick={logOut}>
+            <Button $size="sm" $variant="secondary" onClick={logOut}>
               Log out
             </Button>
           </>

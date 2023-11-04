@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 export const Button = styled.button<{
-  size?: "sm" | "md";
-  variant?: "primary" | "secondary";
-}>(({ size = "md", variant = "filled" }) => ({
+  $size?: "sm" | "md";
+  $variant?: "primary" | "secondary";
+}>(({ $size = "md", $variant = "filled" }) => ({
   font: "inherit",
   color: "white",
   border: "1px solid",
@@ -14,7 +14,7 @@ export const Button = styled.button<{
     background: "#003060",
     borderColor: "#003060",
   },
-  ...(variant === "secondary" && {
+  ...($variant === "secondary" && {
     backgroundColor: "#003060",
     borderColor: "#003060",
     "&:hover": {
@@ -37,7 +37,7 @@ export const Button = styled.button<{
   },
   fontSize: 24,
   lineHeight: "32px",
-  ...(size === "sm" && {
+  ...($size === "sm" && {
     fontSize: 16,
     lineHeight: "20px",
   }),
