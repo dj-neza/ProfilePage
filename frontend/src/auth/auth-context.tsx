@@ -30,6 +30,7 @@ type AuthContextType = {
     signInOptions: { provider: string; defaultCountry: string }[];
   };
   logOut: () => void;
+  generatedName: string | null;
 };
 
 // Initialize Firebase
@@ -38,7 +39,13 @@ firebase.initializeApp(firebaseConfig);
 // @ts-ignore
 const AuthContext = createContext<AuthContextType>();
 
-function AuthProvider({ children }: { children: ReactNode }) {
+function AuthProvider({
+  children,
+  generatedName,
+}: {
+  children: ReactNode;
+  generatedName: string | null;
+}) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userInfo, setUserInfo] = useLocalStorage<User | null>(
     "userInfo",
@@ -84,6 +91,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     firebaseAuth,
     firebaseUiConfig,
     logOut,
+    generatedName,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

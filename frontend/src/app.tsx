@@ -4,6 +4,13 @@ import { SignIn } from "./pages/sign-in";
 import { ProtectedRouteWrapper } from "./protected-route-wrapper";
 import { Profile } from "./pages/profile";
 import { GlobalStyles } from "./styles/global-styles";
+import { useLocalStorage } from "./hooks/use-local-storage";
+import { useEffect } from "react";
+import {
+  animals,
+  adjectives,
+  uniqueNamesGenerator,
+} from "unique-names-generator";
 
 function AppRoutes() {
   return (
@@ -22,8 +29,26 @@ function AppRoutes() {
   );
 }
 export function App() {
+  const [generatedName, setGeneratedName] = useLocalStorage<string | null>(
+    "generatedName",
+    null,
+  );
+
+  useEffect(() => {
+    if (!generatedName) {
+      const randomName = uniqueNamesGenerator({
+        dictionaries: [adjectives, animals],
+        separator: " ",
+        length: 2,
+        style: "capital",
+      });
+      setGeneratedName(randomName);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <AuthProvider>
+    <AuthProvider generatedName={generatedName ?? null}>
       <GlobalStyles />
       <BrowserRouter>
         <AppRoutes />

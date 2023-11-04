@@ -28,12 +28,6 @@ const ContentWrapper = styled.div({
     marginTop: "unset",
   },
 });
-const Row = styled.div({
-  width: "100%",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-});
 const Column = styled.div({
   width: "100%",
   display: "flex",
@@ -59,7 +53,7 @@ const InputWrapper = styled.div({
 });
 
 export function Profile() {
-  const { user, setUser, logOut } = useAuthContext();
+  const { user, setUser, logOut, generatedName } = useAuthContext();
   const [isEditing, setIsEditing] = useState(false);
   const {
     register,
@@ -80,16 +74,9 @@ export function Profile() {
 
   return (
     <PageWrapper>
-      <ContentWrapper>
-        <Row>
-          <Heading>{`Hi, ${user?.name}`}</Heading>
-          {!isEditing && (
-            <Button $size="sm" onClick={() => setIsEditing(true)}>
-              Edit
-            </Button>
-          )}
-        </Row>
-        {isEditing ? (
+      {isEditing ? (
+        <ContentWrapper>
+          <Heading>{`Edit profile`}</Heading>
           <Form
             onSubmit={handleSubmit(onSubmit)}
             name="form"
@@ -137,21 +124,25 @@ export function Profile() {
               Cancel
             </Button>
           </Form>
-        ) : (
-          <>
-            <Column>
-              <Paragraph>{`This is your information:`}</Paragraph>
-              <Paragraph>{user?.phoneNumber}</Paragraph>
-              <Paragraph>
-                {Boolean(user?.email) ? user?.email : "No email yet :("}
-              </Paragraph>
-            </Column>
-            <Button $size="sm" $variant="secondary" onClick={logOut}>
-              Log out
+        </ContentWrapper>
+      ) : (
+        <ContentWrapper>
+          <Heading>{`Hello ${user?.name ?? generatedName}`}</Heading>
+          <Column>
+            <Paragraph>{`This is your information:`}</Paragraph>
+            <Paragraph>{user?.phoneNumber}</Paragraph>
+            <Paragraph>
+              {Boolean(user?.email) ? user?.email : "No email yet :("}
+            </Paragraph>
+            <Button $size="sm" onClick={() => setIsEditing(true)}>
+              Edit
             </Button>
-          </>
-        )}
-      </ContentWrapper>
+          </Column>
+          <Button $size="sm" $variant="secondary" onClick={logOut}>
+            Log out
+          </Button>
+        </ContentWrapper>
+      )}
     </PageWrapper>
   );
 }
