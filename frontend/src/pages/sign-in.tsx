@@ -5,7 +5,6 @@ import FirebaseAuth from "../components/firebase-auth";
 import styled from "styled-components";
 import { PageWrapper } from "../components/page-wrapper";
 import { Heading } from "../components/heading";
-import { firebaseUiOverrides } from "../styles/firebaseui-overrides";
 
 const ContentWrapper = styled.div({
   width: 360,
@@ -17,7 +16,6 @@ const ContentWrapper = styled.div({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  ...firebaseUiOverrides,
 });
 export function SignIn() {
   const { firebaseAuth, firebaseUiConfig } = useAuthContext();

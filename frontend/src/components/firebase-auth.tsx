@@ -2,6 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
+import styled from "styled-components";
+import { firebaseUiOverrides } from "../styles/firebaseui-overrides";
+
+const WrapperWithStylingOverrides = styled.div({
+  ...firebaseUiOverrides,
+});
 
 type FirebaseAuthProps = {
   uiConfig: firebaseui.auth.Config;
@@ -46,7 +52,7 @@ const FirebaseAuth = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firebaseui, uiConfig]);
 
-  return <div className={className} ref={elementRef} />;
+  return <WrapperWithStylingOverrides className={className} ref={elementRef} />;
 };
 
 export default FirebaseAuth;
