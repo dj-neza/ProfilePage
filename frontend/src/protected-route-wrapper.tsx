@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Navigate, Outlet, Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuthContext } from "./auth/auth-context";
 
 type ProtectedRouteWrapperProps = {
