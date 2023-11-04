@@ -13,7 +13,7 @@ import { useLocalStorage } from "../hooks/use-local-storage";
 import { getUser } from "../requests/get-user";
 
 export type User = {
-  displayName?: string;
+  name?: string;
   email?: string;
   phoneNumber: string | null;
 };
@@ -63,7 +63,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const firebaseUiConfig = {
-    signInFlow: "popup", //redirect
+    signInFlow: "popup",
     signInSuccessUrl: "/profile",
     signInOptions: [
       {

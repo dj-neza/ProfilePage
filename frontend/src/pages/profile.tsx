@@ -67,7 +67,7 @@ export function Profile() {
     <PageWrapper>
       <ContentWrapper>
         <Row>
-          <Heading>{`Hi, ${user?.displayName}`}</Heading>
+          <Heading>{`Hi, ${user?.name}`}</Heading>
           {!isEditing && (
             <Button size="sm" onClick={() => setIsEditing(true)}>
               Edit
@@ -84,13 +84,13 @@ export function Profile() {
               <InputWrapper>
                 <Input
                   placeholder="Name"
-                  {...register("displayName", {
+                  {...register("name", {
                     required: "Name is mandatory",
                   })}
-                  hasError={Boolean(errors.displayName)}
+                  hasError={Boolean(errors.name)}
                 />
-                {errors.displayName?.message && (
-                  <ErrorMessage>{errors.displayName?.message}</ErrorMessage>
+                {errors.name?.message && (
+                  <ErrorMessage>{errors.name?.message}</ErrorMessage>
                 )}
               </InputWrapper>
               <InputWrapper>
@@ -125,9 +125,11 @@ export function Profile() {
         ) : (
           <>
             <Column>
-              <Paragraph>{`You have logged in using this information:`}</Paragraph>
+              <Paragraph>{`This is your information:`}</Paragraph>
               <Paragraph>{user?.phoneNumber}</Paragraph>
-              <Paragraph>{user?.email ?? "No email yet :("}</Paragraph>
+              <Paragraph>
+                {Boolean(user?.email) ? user?.email : "No email yet :("}
+              </Paragraph>
             </Column>
             <Button size="sm" variant="secondary" onClick={logOut}>
               Log out
