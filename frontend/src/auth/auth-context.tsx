@@ -23,6 +23,7 @@ type AuthContextType = {
   user?: User | null;
   setUser: Dispatch<SetStateAction<User | null | undefined>>;
   isAuthenticated: boolean;
+  isLoading: boolean;
   firebaseAuth: firebase.auth.Auth;
   firebaseUiConfig: {
     signInFlow: string;
@@ -47,6 +48,7 @@ function AuthProvider({
   generatedName: string | null;
 }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [userInfo, setUserInfo] = useLocalStorage<User | null>(
     "userInfo",
     null,
@@ -59,9 +61,11 @@ function AuthProvider({
       if (user?.phoneNumber) {
         const { phoneNumber } = user;
         setIsAuthenticated(true);
-        getUser({ phoneNumber }).then(({ data }) =>
-          setUserInfo({ phoneNumber, ...data }),
-        );
+        setIsLoading(true);
+        getUser({ phoneNumber }).then(({ data }) => {
+          setUserInfo({ phoneNumber, ...data });
+          setIsLoading(false);
+        });
       } else {
         setIsAuthenticated(false);
         setUserInfo(null);
@@ -88,6 +92,7 @@ function AuthProvider({
     user: userInfo,
     setUser: setUserInfo,
     isAuthenticated,
+    isLoading,
     firebaseAuth,
     firebaseUiConfig,
     logOut,

@@ -1,6 +1,5 @@
 import { Navigate } from "react-router-dom";
 import { useAuthContext } from "../auth/auth-context";
-// import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import FirebaseAuth from "../components/firebase-auth";
 import { PageWrapper } from "../components/page-wrapper";
 import { Heading } from "../components/heading";

@@ -36,7 +36,13 @@ const InputWrapper = styled.div({
 });
 
 export function Profile() {
-  const { user, setUser, logOut, generatedName } = useAuthContext();
+  const {
+    user,
+    setUser,
+    logOut,
+    generatedName,
+    isLoading: isAuthLoading,
+  } = useAuthContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -61,7 +67,7 @@ export function Profile() {
       });
   };
 
-  if (isLoading) {
+  if (isLoading || isAuthLoading) {
     return (
       <PageWrapper>
         <ContentWrapper $verticallyCenter>
