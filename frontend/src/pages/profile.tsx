@@ -62,7 +62,7 @@ export function Profile() {
     await updateUser({ ...formValues, phoneNumber: user?.phoneNumber! })
       .then(() => setUser(formValues))
       .finally(() => {
-        handleStopEditing();
+        setIsEditing(false);
         setIsLoading(false);
       });
   };
