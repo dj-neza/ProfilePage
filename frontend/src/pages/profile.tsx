@@ -7,10 +7,11 @@ import styled from "styled-components";
 import { PageWrapper } from "../components/page-wrapper";
 import { Paragraph } from "../components/paragraph";
 import { Input } from "../components/input";
+import { useForm } from "react-hook-form";
 
 const ContentWrapper = styled.div({
   width: 360,
-  height: 320,
+  minHeight: 320,
   backgroundColor: "white",
   borderRadius: 16,
   border: "1px solid #E5E5E5",
@@ -37,19 +38,21 @@ const Column = styled.div({
 export function Profile() {
   const { user, setUser, logOut } = useAuthContext();
   const [isEditing, setIsEditing] = useState(false);
-  const [formValues, setFormValues] = useState({
-    displayName: user?.displayName,
-    email: user?.email,
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+  } = useForm<User>({ defaultValues: user ?? undefined, mode: "onChange" });
 
-  const handleFormValueChange = (newFormValues: Partial<User>) => {
-    setFormValues((prevValues) => ({ ...prevValues, ...newFormValues }));
-  };
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    await updateUser({ phoneNumber: user?.phoneNumber!, ...formValues })
-      .then(() => setUser({ phoneNumber: user?.phoneNumber!, ...formValues }))
+  const onSubmit = async (formValues: User) => {
+    await updateUser({ ...formValues, phoneNumber: user?.phoneNumber! })
+      .then(() => setUser(formValues))
       .finally(() => setIsEditing(false));
+  };
+  const handleStopEditing = () => {
+    setIsEditing(false);
+    reset(user ?? undefined);
   };
 
   return (
@@ -64,30 +67,39 @@ export function Profile() {
           )}
         </Row>
         {isEditing ? (
-          <form onSubmit={handleSubmit} name="form" style={{ width: "100%" }}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            name="form"
+            style={{ width: "100%" }}
+          >
             <Column>
               <Input
-                value={formValues.displayName}
                 placeholder="Name"
-                onChange={(e) =>
-                  handleFormValueChange({ displayName: e.target.value })
-                }
+                {...register("displayName", { required: "Name is mandatory" })}
               />
               <Input
-                value={formValues.email}
                 placeholder="Email"
-                onChange={(e) =>
-                  handleFormValueChange({ email: e.target.value })
-                }
+                {...register("email", {
+                  required: "Email is mandatory",
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: "Please enter a valid email",
+                  },
+                })}
               />
-              <Button size="sm" type="submit">
+              <Paragraph>
+                {errors.email?.message ||
+                  errors.displayName?.message ||
+                  "lalala"}
+              </Paragraph>
+              <Button size="sm" type="submit" disabled={!isValid}>
                 Save
               </Button>
               <Button
                 size="sm"
                 type="button"
                 variant="secondary"
-                onClick={() => setIsEditing(false)}
+                onClick={handleStopEditing}
               >
                 Cancel
               </Button>
