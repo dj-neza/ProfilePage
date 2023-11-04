@@ -5,6 +5,7 @@ import {
   useContext,
   useEffect,
   Dispatch,
+  useState,
 } from "react";
 import { firebaseConfig } from "../vendor/firebase-config";
 import firebase from "firebase/compat/app";
@@ -38,6 +39,7 @@ firebase.initializeApp(firebaseConfig);
 const AuthContext = createContext<AuthContextType>();
 
 function AuthProvider({ children }: { children: ReactNode }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userInfo, setUserInfo] = useLocalStorage<User | null>(
     "userInfo",
     null,
@@ -49,10 +51,12 @@ function AuthProvider({ children }: { children: ReactNode }) {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user?.phoneNumber) {
         const { phoneNumber } = user;
+        setIsAuthenticated(true);
         getUser({ phoneNumber }).then(({ data }) =>
           setUserInfo({ phoneNumber, ...data }),
         );
       } else {
+        setIsAuthenticated(false);
         setUserInfo(null);
       }
     });
@@ -76,7 +80,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const value = {
     user: userInfo,
     setUser: setUserInfo,
-    isAuthenticated: Boolean(userInfo),
+    isAuthenticated,
     firebaseAuth,
     firebaseUiConfig,
     logOut,
