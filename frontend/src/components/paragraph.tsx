@@ -6,4 +6,11 @@ export const Paragraph = styled.p({
   lineHeight: "24px",
   color: "#050A30",
   whiteSpace: "pre-wrap",
+  margin: 0,
+});
+
+export const ErrorMessage = styled(Paragraph)({
+  fontSize: 14,
+  lineHeight: "18px",
+  color: "#8B0000",
 });
