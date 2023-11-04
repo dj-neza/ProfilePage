@@ -70,9 +70,6 @@ exports.getUser = onRequest({cors: true}, async (req, res) => {
 
   await firestore.collection("users").doc(phoneNumber).get()
     .then((user) => {
-      if (!user.exists) {
-        res.status(400).json({error: "The user doesn't exist."});
-      }
       res.json({...user.data()});
     }).catch((error) => {
       res.status(500).json({error});
