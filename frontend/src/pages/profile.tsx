@@ -8,26 +8,9 @@ import { PageWrapper } from "../components/page-wrapper";
 import { ErrorMessage, Paragraph } from "../components/paragraph";
 import { Input } from "../components/input";
 import { useForm } from "react-hook-form";
+import { Loader } from "../components/loader";
+import { ContentWrapper } from "../components/content-wrapper";
 
-const ContentWrapper = styled.div({
-  boxSizing: "border-box",
-  width: "100%",
-  height: "90%",
-  marginTop: "20%",
-  backgroundColor: "white",
-  border: "1px solid #E5E5E5",
-  padding: 24,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  "@media(min-width: 480px)": {
-    width: 360,
-    minHeight: "50%",
-    height: "unset",
-    borderRadius: 16,
-    marginTop: "unset",
-  },
-});
 const Column = styled.div({
   width: "100%",
   display: "flex",
@@ -55,6 +38,7 @@ const InputWrapper = styled.div({
 export function Profile() {
   const { user, setUser, logOut, generatedName } = useAuthContext();
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -63,14 +47,28 @@ export function Profile() {
   } = useForm<User>({ defaultValues: user ?? undefined, mode: "onChange" });
 
   const onSubmit = async (formValues: User) => {
+    setIsLoading(true);
     await updateUser({ ...formValues, phoneNumber: user?.phoneNumber! })
       .then(() => setUser(formValues))
-      .finally(() => setIsEditing(false));
+      .finally(() => {
+        setIsEditing(false);
+        setIsLoading(false);
+      });
   };
   const handleStopEditing = () => {
     setIsEditing(false);
     reset(user ?? undefined);
   };
+
+  if (isLoading) {
+    return (
+      <PageWrapper>
+        <ContentWrapper $verticallyCenter>
+          <Loader />
+        </ContentWrapper>
+      </PageWrapper>
+    );
+  }
 
   return (
     <PageWrapper>
