@@ -13,11 +13,11 @@ To run the firebase commands you need to install the [Firebase CLI](https://fire
 
 ### `npm install`
 
-To install the packages used for the functions. Should be done the first time when working with this project.\
+To install the packages used for the functions. Should be done the first time when working with this project.
 
 ### `npm run serve`
 
-Builds the functions and starts up the Firebase emulator for testing the functions locally pre-deploy (includes visible logs and temporary Firestore).\
+Builds the functions and starts up the Firebase emulator for testing the functions locally pre-deploy (includes visible logs and temporary Firestore).
 
 ## Building and deploying the functions 
 

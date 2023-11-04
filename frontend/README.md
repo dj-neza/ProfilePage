@@ -11,7 +11,7 @@ In the project directory, you can run:
 
 ### `npm install`
 
-To install the packages used in the app. Should be done the first time before running the app.\
+To install the packages used in the app. Should be done the first time before running the app.
 
 ### `npm run start`
 
@@ -20,7 +20,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ### `npm run build`
 
-Builds the app for production deploy to the `build` folder.\
+Builds the app for production deploy to the `build` folder.
 
 ## Environment variables
 
