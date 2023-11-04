@@ -13,7 +13,9 @@ initializeApp();
 
 const firestore = getFirestore();
 
-// Add user to Firestore when user is created in Firebase Auth.
+/**
+ * Adds user to Firestore when user is created in Firebase Auth.
+ */
 exports.addUser = auth.user().onCreate(async (authUser: UserRecord) => {
   if (!authUser.phoneNumber) {
     logger.error("No phone number was provided.");
@@ -30,7 +32,9 @@ exports.addUser = auth.user().onCreate(async (authUser: UserRecord) => {
   });
 });
 
-// Update users details
+/**
+ * Updates the user details in Firestore.
+ */
 exports.updateUser = onRequest(
   {cors: true},
   async (req, res) => {
@@ -61,7 +65,9 @@ exports.updateUser = onRequest(
   }
 );
 
-// Get user details
+/**
+ * Retrieves the user details from Firestore.
+ */
 exports.getUser = onRequest({cors: true}, async (req, res) => {
   const phoneNumber = req.query.phoneNumber as string;
   if (!phoneNumber) {
