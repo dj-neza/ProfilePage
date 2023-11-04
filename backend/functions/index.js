@@ -21,14 +21,14 @@ exports.addUser = auth.user().onCreate(async (user) => {
 // Update users details
 exports.updateUser = onRequest({cors: true}, async (req, res) => {
   const email = req.body.email;
-  const displayName = req.body.displayName;
+  const name = req.body.name;
   const phoneNumber = req.body.phoneNumber;
   await getFirestore()
       .collection("users")
       .doc(phoneNumber)
       .set({
-        name: displayName,
-        email: email,
+        name,
+        email,
       }).then(() => res.json({result: `User info updated.`})).catch((error) => {
         res.json({error});
       });
