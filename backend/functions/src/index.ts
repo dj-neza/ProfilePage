@@ -1,30 +1,32 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and triggers.
 import {onRequest} from "firebase-functions/v2/https";
-import {auth} from "firebase-functions";
+import {auth, logger} from "firebase-functions";
 
 // The Firebase Admin SDK to access Firestore.
 import {initializeApp} from "firebase-admin/app";
 import {getFirestore} from "firebase-admin/firestore";
 import {UserRecord} from "firebase-admin/auth";
 
+const emailRegex = /\S+@\S+\.\S+/;
+
 initializeApp();
+
+const firestore = getFirestore();
 
 // Add user to Firestore when user is created in Firebase Auth.
 exports.addUser = auth.user().onCreate(async (authUser: UserRecord) => {
-   // handle error with missing phone number
   if (!authUser.phoneNumber) {
-    // add 400 with missing phone number for logging 
+    logger.error("No phone number was provided.");
     return;
   }
 
-  await getFirestore().collection("users").doc(
+  await firestore.collection("users").doc(
     authUser.phoneNumber,
   ).set({
-    // remove default values
-    name: "Happy chipmunk",
-    email: "",
-  }).catch(() => {
-    // add 500 for logging
+    name: null,
+    email: null,
+  }).catch((error) => {
+    logger.error(`Error: ${error}`);
   });
 });
 
@@ -35,14 +37,25 @@ exports.updateUser = onRequest(
     const email = req.body.email;
     const name = req.body.name;
     const phoneNumber = req.body.phoneNumber;
-    // for each field, check if it exists / is valid and return 400 if not
-    await getFirestore()
+    if (!phoneNumber) {
+      res.status(400).json({error: "Phone number of the user is required."});
+    }
+    if (!email) {
+      res.status(400).json({error: "Email is required."});
+    }
+    if (!emailRegex.test(email)) {
+      res.status(400).json({error: "Email is invalid."});
+    }
+    if (!name) {
+      res.status(400).json({error: "Name is required."});
+    }
+    await firestore
       .collection("users")
       .doc(phoneNumber)
       .set({
         name,
         email,
-      }).then(() => res.json({result: "User info updated."})).catch((error) => {
+      }).then(() => res.json({result: "User updated."})).catch((error) => {
         res.status(500).json({error});
       });
   }
@@ -51,11 +64,14 @@ exports.updateUser = onRequest(
 // Get user details
 exports.getUser = onRequest({cors: true}, async (req, res) => {
   const phoneNumber = req.query.phoneNumber as string;
-  // check if phone number exists
-  await getFirestore().collection("users").doc(phoneNumber).get()
+  if (!phoneNumber) {
+    res.status(400).json({error: "Phone number of the user is required."});
+  }
+
+  await firestore.collection("users").doc(phoneNumber).get()
     .then((user) => {
       if (!user.exists) {
-        res.status(400).json({error: "No such user!"});
+        res.status(400).json({error: "The user doesn't exist."});
       }
       res.json({...user.data()});
     }).catch((error) => {
