@@ -5,5 +5,7 @@ export const PageWrapper = styled.div({
   height: "100%",
   display: "flex",
   alignItems: "center",
-  justifyContent: "center",
+  "@media(min-width: 480px)": {
+    justifyContent: "center",
+  },
 });

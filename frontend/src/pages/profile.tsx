@@ -10,16 +10,21 @@ import { Input } from "../components/input";
 import { useForm } from "react-hook-form";
 
 const ContentWrapper = styled.div({
-  width: 360,
-  minHeight: 320,
+  boxSizing: "border-box",
+  width: "100%",
+  height: "90%",
+  marginTop: "20%",
   backgroundColor: "white",
-  borderRadius: 16,
   border: "1px solid #E5E5E5",
   padding: 24,
   display: "flex",
   flexDirection: "column",
-  gap: 32,
   alignItems: "center",
+  "@media(min-width: 480px)": {
+    width: 360,
+    borderRadius: 16,
+    marginTop: "unset",
+  },
 });
 const Row = styled.div({
   width: "100%",
