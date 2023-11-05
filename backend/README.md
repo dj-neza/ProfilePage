@@ -29,3 +29,7 @@ Then deploys the functions
 ## Using the Firebase console
 
 To get access to the Firebase console, please contact the project owner.
+
+## Database screenshot
+
+You can find the screenshot of the DB shape of data in this directory.
