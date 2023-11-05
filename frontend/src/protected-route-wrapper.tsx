@@ -1,17 +1,17 @@
-import { ReactNode } from "react";
-import { Navigate } from "react-router-dom";
-import { useAuthContext } from "./auth/auth-context";
+import { ReactNode } from 'react'
+import { Navigate } from 'react-router-dom'
+import { useAuthContext } from './auth/auth-context'
 
 type ProtectedRouteWrapperProps = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 export function ProtectedRouteWrapper({
   children,
 }: ProtectedRouteWrapperProps) {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated } = useAuthContext()
 
   if (!isAuthenticated) {
-    return <Navigate to="/sign-in" />;
+    return <Navigate to="/sign-in" />
   }
-  return children;
+  return children
 }

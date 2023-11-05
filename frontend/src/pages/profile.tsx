@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { useAuthContext } from "../auth/auth-context";
-import { Button } from "../components/button";
-import { Heading } from "../components/heading";
-import styled from "styled-components";
-import { PageWrapper } from "../components/page-wrapper";
-import { Paragraph } from "../components/paragraph";
-import { Loader } from "../components/loader";
-import { ContentWrapper } from "../components/content-wrapper";
-import { ProfileForm } from "../components/profile-form";
+import { useState } from 'react'
+import { useAuthContext } from '../auth/auth-context'
+import { Button } from '../components/button'
+import { Heading } from '../components/heading'
+import styled from 'styled-components'
+import { PageWrapper } from '../components/page-wrapper'
+import { Paragraph } from '../components/paragraph'
+import { Loader } from '../components/loader'
+import { ContentWrapper } from '../components/content-wrapper'
+import { ProfileForm } from '../components/profile-form'
 
 export const Column = styled.div({
-  width: "100%",
-  display: "flex",
+  width: '100%',
+  display: 'flex',
   flexGrow: 1,
-  flexDirection: "column",
-  alignItems: "center",
+  flexDirection: 'column',
+  alignItems: 'center',
   gap: 16,
-});
+})
 
 export function Profile() {
   const {
@@ -24,9 +24,9 @@ export function Profile() {
     logOut,
     generatedName,
     isLoading: isAuthLoading,
-  } = useAuthContext();
-  const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  } = useAuthContext()
+  const [isEditing, setIsEditing] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   if (isLoading || isAuthLoading) {
     return (
@@ -35,7 +35,7 @@ export function Profile() {
           <Loader />
         </ContentWrapper>
       </PageWrapper>
-    );
+    )
   }
 
   return (
@@ -55,7 +55,7 @@ export function Profile() {
             <Paragraph>{`This is your information:`}</Paragraph>
             <Paragraph>{user?.phoneNumber}</Paragraph>
             <Paragraph>
-              {Boolean(user?.email) ? user?.email : "No email yet :("}
+              {Boolean(user?.email) ? user?.email : 'No email yet :('}
             </Paragraph>
             <Button $size="sm" onClick={() => setIsEditing(true)}>
               Edit
@@ -67,5 +67,5 @@ export function Profile() {
         </ContentWrapper>
       )}
     </PageWrapper>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useMemo, useState, useEffect, Dispatch, SetStateAction } from 'react'
 
 /**
  * Like useState but persisting values in localStorage.
@@ -12,19 +12,19 @@ export function useLocalStorage<T>(
   defaultValue?: T,
 ): [T | undefined, Dispatch<SetStateAction<T | undefined>>] {
   const initialStorageValue: T | undefined = useMemo(() => {
-    const initial = window.localStorage.getItem(localStorageKey);
-    return initial ? JSON.parse(initial) : undefined;
-  }, [localStorageKey]);
+    const initial = window.localStorage.getItem(localStorageKey)
+    return initial ? JSON.parse(initial) : undefined
+  }, [localStorageKey])
 
-  const [value, setValue] = useState(initialStorageValue ?? defaultValue);
+  const [value, setValue] = useState(initialStorageValue ?? defaultValue)
 
   useEffect(() => {
     if (value !== undefined) {
-      window.localStorage.setItem(localStorageKey, JSON.stringify(value));
+      window.localStorage.setItem(localStorageKey, JSON.stringify(value))
     } else {
-      window.localStorage.removeItem(localStorageKey);
+      window.localStorage.removeItem(localStorageKey)
     }
-  }, [value, localStorageKey]);
+  }, [value, localStorageKey])
 
-  return [value, setValue];
+  return [value, setValue]
 }
