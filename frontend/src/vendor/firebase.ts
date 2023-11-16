@@ -1,4 +1,5 @@
 import firebase from 'firebase/compat/app'
+import { getFunctions } from 'firebase/functions'
 
 const apiKey = process.env['REACT_APP_FIREBASE_API']
 export const firebaseConfig = {
@@ -12,3 +13,5 @@ export const firebaseConfig = {
 
 // Initialize Firebase
 export const firebaseInstance = firebase.initializeApp(firebaseConfig)
+// Initialize Firebase functions
+export const firebaseFunctions = getFunctions()
