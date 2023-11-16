@@ -1,6 +1,5 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and triggers.
 import {
-  onRequest,
   onCall,
   HttpsError,
 } from 'firebase-functions/v2/https'
@@ -41,32 +40,32 @@ exports.addUser = auth.user().onCreate(async (authUser: UserRecord) => {
 /**
  * Updates the user details in Firestore.
  */
-exports.updateUser = onRequest({ cors: true }, async (req, res) => {
-  const email = req.body.email
-  const name = req.body.name
-  const phoneNumber = req.body.phoneNumber
-  if (!phoneNumber) {
-    res.status(400).json({ error: 'Phone number of the user is required.' })
+exports.updateUser = onCall({ cors: true }, async (request) => {
+  const phoneNumber = request.auth?.token?.phone_number
+  if (!request.auth || !phoneNumber) {
+    throw new HttpsError('unauthenticated', 'You need to be signed in.')
   }
+  const email = request.data.email
+  const name = request.data.name
   if (!email) {
-    res.status(400).json({ error: 'Email is required.' })
+    throw new HttpsError('invalid-argument', 'Email is required.')
   }
   if (!emailRegex.test(email)) {
-    res.status(400).json({ error: 'Email is invalid.' })
+    throw new HttpsError('invalid-argument', 'Email is invalid.')
   }
   if (!name) {
-    res.status(400).json({ error: 'Name is required.' })
+    throw new HttpsError('invalid-argument', 'Name is required.')
   }
-  await firestore
+  return firestore
     .collection('users')
     .doc(phoneNumber)
     .set({
       name,
       email,
     })
-    .then(() => res.json({ result: 'User updated.' }))
+    .then(() => ({ result: 'User updated.' }))
     .catch((error) => {
-      res.status(500).json({ error })
+      throw new HttpsError('unknown', error)
     })
 })
 
@@ -87,6 +86,6 @@ exports.getUser = onCall({ cors: true }, async (request) => {
       return { phoneNumber, ...user.data() }
     })
     .catch((error) => {
-      throw new HttpsError('unavailable', error)
+      throw new HttpsError('unknown', error)
     })
 })
