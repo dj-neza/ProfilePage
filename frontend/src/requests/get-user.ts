@@ -1,14 +1,7 @@
-import axios from 'axios'
+import { firebaseFunctions } from '../vendor/firebase'
+import { httpsCallable } from 'firebase/functions'
 
-const requestSuffix = process.env['REACT_APP_FIREBASE_FNS_SUFFIX']
-
-type GetUserParams = {
-  phoneNumber: string
-}
-export function getUser({ phoneNumber }: GetUserParams) {
-  return axios.get(`https://getuser${requestSuffix}`, {
-    params: {
-      phoneNumber,
-    },
-  })
+export function getUser() {
+  const getUserFn = httpsCallable(firebaseFunctions, 'getUser')
+  return getUserFn()
 }
