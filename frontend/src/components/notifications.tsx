@@ -56,7 +56,6 @@ export function Notification({ message, onClose }: NotificationConfig) {
 
 export function Notifications() {
   const { notifications } = useNotificationContext()
-  console.log(notifications)
   return (
     <NotificationsListContainer>
       {notifications.map((notification) => (
