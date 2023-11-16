@@ -1,16 +1,11 @@
-import axios from 'axios'
-
-const requestSuffix = process.env['REACT_APP_FIREBASE_FNS_SUFFIX']
+import { firebaseFunctions } from '../vendor/firebase'
+import { httpsCallable } from 'firebase/functions'
 
 type UpdateUserParams = {
-  phoneNumber: string
   email?: string
   name?: string
 }
-export function updateUser({ phoneNumber, email, name }: UpdateUserParams) {
-  return axios.put(`https://updateuser${requestSuffix}`, {
-    phoneNumber,
-    email,
-    name,
-  })
+export function updateUser({ email, name }: UpdateUserParams) {
+  const updateUserFn = httpsCallable(firebaseFunctions, 'updateUser')
+  return updateUserFn({ email, name })
 }
