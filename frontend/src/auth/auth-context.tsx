@@ -12,7 +12,7 @@ import 'firebase/compat/auth'
 import { useLocalStorage } from '../hooks/use-local-storage'
 import { getUser } from '../requests/get-user'
 import { useNotificationContext } from '../contexts/notification-context'
-import { firebaseInstance } from '../vendor/firebase-config'
+import { firebaseInstance } from '../vendor/firebase'
 
 export type User = {
   name?: string
