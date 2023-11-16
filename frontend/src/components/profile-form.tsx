@@ -43,14 +43,14 @@ export function ProfileForm({ setIsEditing, setIsLoading }: ProfileFormProps) {
   }
   const onSubmit = async (formValues: User) => {
     setIsLoading(true)
-    await updateUser({ ...formValues, phoneNumber: user?.phoneNumber! })
+    updateUser(formValues)
       .then(() => {
-        setUser({ ...formValues, phoneNumber: user?.phoneNumber! })
+        setUser((prevUser) => ({ ...prevUser, ...formValues }))
         setIsEditing(false)
       })
-      .catch(({ response }) => {
+      .catch((error) => {
         addNotification({
-          message: response.data.error ?? 'Something unexpected happened.',
+          message: error?.message ?? 'Something unexpected happened.',
         })
       })
       .finally(() => {
