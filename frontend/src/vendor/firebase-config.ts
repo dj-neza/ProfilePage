@@ -1,3 +1,5 @@
+import firebase from 'firebase/compat/app'
+
 const apiKey = process.env['REACT_APP_FIREBASE_API']
 export const firebaseConfig = {
   apiKey,
@@ -7,3 +9,6 @@ export const firebaseConfig = {
   messagingSenderId: '606089239250',
   appId: process.env['REACT_APP_FIREBASE_APP_ID'],
 }
+
+// Initialize Firebase
+export const firebaseInstance = firebase.initializeApp(firebaseConfig)

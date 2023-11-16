@@ -7,12 +7,12 @@ import {
   Dispatch,
   useState,
 } from 'react'
-import { firebaseConfig } from '../vendor/firebase-config'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import { useLocalStorage } from '../hooks/use-local-storage'
 import { getUser } from '../requests/get-user'
 import { useNotificationContext } from '../contexts/notification-context'
+import { firebaseInstance } from '../vendor/firebase-config'
 
 export type User = {
   name?: string
@@ -35,9 +35,6 @@ type AuthContextType = {
   generatedName: string | null
 }
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig)
-
 // @ts-ignore
 const AuthContext = createContext<AuthContextType>()
 
@@ -53,10 +50,10 @@ function AuthProvider({
   const [isLoading, setIsLoading] = useState(false)
   const [userInfo, setUserInfo] = useLocalStorage<User | null>('userInfo', null)
 
-  const firebaseAuth = firebase.auth()
+  const firebaseAuth = firebaseInstance.auth()
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(async (user) => {
+    firebaseAuth.onAuthStateChanged(async (user) => {
       if (user?.phoneNumber) {
         const { phoneNumber } = user
         setIsAuthenticated(true)
