@@ -54,18 +54,17 @@ function AuthProvider({
 
   useEffect(() => {
     firebaseAuth.onAuthStateChanged(async (user) => {
-      if (user?.phoneNumber) {
-        const { phoneNumber } = user
+      if (user) {
         setIsAuthenticated(true)
         setIsLoading(true)
-        getUser({ phoneNumber })
+        getUser()
           .then(({ data }) => {
-            setUserInfo({ phoneNumber, ...data })
+            setUserInfo(data as any)
             setIsLoading(false)
           })
-          .catch(({ response }) => {
+          .catch((error) => {
             addNotification({
-              message: response.data.error ?? 'Something unexpected happened.',
+              message: error.message ?? 'Something unexpected happened.',
             })
             setIsLoading(false)
           })
