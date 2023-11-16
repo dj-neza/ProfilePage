@@ -1,5 +1,9 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and triggers.
-import { onRequest } from 'firebase-functions/v2/https'
+import {
+  onRequest,
+  onCall,
+  HttpsError,
+} from 'firebase-functions/v2/https'
 import { auth, logger } from 'firebase-functions'
 
 // The Firebase Admin SDK to access Firestore.
@@ -69,20 +73,20 @@ exports.updateUser = onRequest({ cors: true }, async (req, res) => {
 /**
  * Retrieves the user details from Firestore.
  */
-exports.getUser = onRequest({ cors: true }, async (req, res) => {
-  const phoneNumber = req.query.phoneNumber as string
-  if (!phoneNumber) {
-    res.status(400).json({ error: 'Phone number of the user is required.' })
+exports.getUser = onCall({ cors: true }, async (request) => {
+  const phoneNumber = request.auth?.token?.phone_number
+  if (!request.auth || !phoneNumber) {
+    throw new HttpsError('unauthenticated', 'You need to be signed in.')
   }
 
-  await firestore
+  return firestore
     .collection('users')
     .doc(phoneNumber)
     .get()
     .then((user) => {
-      res.json({ ...user.data() })
+      return { phoneNumber, ...user.data() }
     })
     .catch((error) => {
-      res.status(500).json({ error })
+      throw new HttpsError('unavailable', error)
     })
 })
