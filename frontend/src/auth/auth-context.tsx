@@ -45,10 +45,10 @@ function AuthProvider({
   children: ReactNode
   generatedName: string | null
 }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [userInfo, setUserInfo] = useLocalStorage<User | null>('userInfo', null)
+  const [isAuthenticated, setIsAuthenticated] = useState(Boolean(userInfo))
   const { addNotification } = useNotificationContext()
   const [isLoading, setIsLoading] = useState(false)
-  const [userInfo, setUserInfo] = useLocalStorage<User | null>('userInfo', null)
 
   const firebaseAuth = firebaseInstance.auth()
 
@@ -60,14 +60,13 @@ function AuthProvider({
         getUser()
           .then(({ data }) => {
             setUserInfo(data as any)
-            setIsLoading(false)
           })
           .catch((error) => {
             addNotification({
               message: error.message ?? 'Something unexpected happened.',
             })
-            setIsLoading(false)
           })
+          .finally(() => setIsLoading(false))
       } else {
         setIsAuthenticated(false)
         setUserInfo(null)
