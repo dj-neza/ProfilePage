@@ -4,13 +4,12 @@ import {
   HttpsError,
 } from 'firebase-functions/v2/https'
 import { auth, logger } from 'firebase-functions'
+import { z } from 'zod'
 
 // The Firebase Admin SDK to access Firestore.
 import { initializeApp } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
 import { UserRecord } from 'firebase-admin/auth'
-
-const emailRegex = /\S+@\S+\.\S+/
 
 initializeApp()
 
@@ -37,6 +36,17 @@ exports.addUser = auth.user().onCreate(async (authUser: UserRecord) => {
     })
 })
 
+const UpdateUserSchema = z.object({
+  email: z.string({
+    required_error: 'Email is required',
+  }).email({
+    message: 'Email is invalid',
+  }),
+  name: z.string({
+    required_error: 'Name is required',
+  }),
+})
+
 /**
  * Updates the user details in Firestore.
  */
@@ -45,23 +55,15 @@ exports.updateUser = onCall({ cors: true }, async (request) => {
   if (!request.auth || !phoneNumber) {
     throw new HttpsError('unauthenticated', 'You need to be signed in.')
   }
-  const email = request.data.email
-  const name = request.data.name
-  if (!email) {
-    throw new HttpsError('invalid-argument', 'Email is required.')
-  }
-  if (!emailRegex.test(email)) {
-    throw new HttpsError('invalid-argument', 'Email is invalid.')
-  }
-  if (!name) {
-    throw new HttpsError('invalid-argument', 'Name is required.')
-  }
+  const data = UpdateUserSchema.catch(({ error }) => {
+    throw new HttpsError('invalid-argument', error.issues[0]?.message)
+  }).parse(request.data)
+
   return firestore
     .collection('users')
     .doc(phoneNumber)
     .set({
-      name,
-      email,
+      ...data,
     })
     .then(() => ({ result: 'User updated.' }))
     .catch((error) => {
