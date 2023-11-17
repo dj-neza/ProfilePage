@@ -11,17 +11,10 @@ const WrapperWithStylingOverrides = styled.div({
 
 type FirebaseAuthProps = {
   uiConfig: firebaseui.auth.Config
-  uiCallback?(ui: firebaseui.auth.AuthUI): void
   firebaseAuth: any
-  className?: string
 }
 
-const FirebaseAuth = ({
-  uiConfig,
-  firebaseAuth,
-  className,
-  uiCallback,
-}: FirebaseAuthProps) => {
+const FirebaseAuth = ({ uiConfig, firebaseAuth }: FirebaseAuthProps) => {
   const [userSignedIn, setUserSignedIn] = useState(false)
   const elementRef = useRef(null)
 
@@ -38,9 +31,6 @@ const FirebaseAuth = ({
       setUserSignedIn(!!user)
     })
 
-    // Trigger the callback if any was set.
-    if (uiCallback) uiCallback(firebaseUiWidget)
-
     // Render the firebaseUi Widget.
     // @ts-ignore
     firebaseUiWidget.start(elementRef.current, uiConfig)
@@ -52,7 +42,7 @@ const FirebaseAuth = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firebaseui, uiConfig])
 
-  return <WrapperWithStylingOverrides className={className} ref={elementRef} />
+  return <WrapperWithStylingOverrides ref={elementRef} />
 }
 
 export default FirebaseAuth
